@@ -10,11 +10,11 @@
 | 功能分类     | 接口/方法                     | 参数示例                                                                 | 使用场景                        | 实现要点                                                     |
 |--------------|------------------------------|--------------------------------------------------------------------------|-------------------------------|--------------------------------------------------------------|
 | **账户管理** |                              |                                                                          |                               |                                                              |
-| `create_account` | 创建子账户               | `{ "new_account_id": "user123.cex.near", "public_key": "ed25519:..." }` | 为用户生成唯一存款地址         | 主账户发起，需预存 0.0012 NEAR 押金                          |
+| `create_account` | 创建子账户               | `{ "new_account_id": "user123.cex.near", "public_key": "ed25519:..." }` | 为用户生成唯一存款地址         | 主账户发起，需预存 0.0012 NBC 押金                          |
 | `view_account`   | 查询账户状态             | `{ "account_id": "user123.cex.near" }`                                   | 验证账户是否存在、查询余额     | 返回 `amount`, `storage_usage`                              |
 | `add_key`        | 添加多签密钥             | `{ "public_key": "ed25519:...", "access_key": { "permission": "FullAccess" }}` | 设置冷钱包审批权限       | 限定权限或用途                                               |
 | **资产操作** |                              |                                                                          |                               |                                                              |
-| `send_money`     | NEAR 转账                | `{ "receiver_id": "cex.near", "amount": "1000000000000000000000000" }`   | 用户提现                      | 注意 Gas 成本和失败回滚                                      |
+| `send_money`     | NBC 转账                | `{ "receiver_id": "cex.near", "amount": "1000000000000000000000000" }`   | 用户提现                      | 注意 Gas 成本和失败回滚                                      |
 | `ft_transfer`    | FT 代币转账（NEP-141）   | `{ "receiver_id": "userx.near", "amount": "1000000", "memo": "withdraw" }` | 处理 USDT、ETH 等代币提现 | 先调用 `storage_deposit` 为接收方充值押金                    |
 | `batch_actions`  | 批量操作                 | 多笔 `ft_transfer` 或 `send_money` 组合                                  | 节省 Gas 处理批量提现         | 限 100 Action、Gas 不超 300 TGas                            |
 | **交易处理** |                              |                                                                          |                               |                                                              |
@@ -33,7 +33,7 @@
 
 ```mermaid
 graph LR
-    CEX主账户 --> 热钱包[热钱包：0.05 NEAR运营资金]
+    CEX主账户 --> 热钱包[热钱包：0.05 NBC运营资金]
     CEX主账户 --> 冷钱包[冷钱包：多签管理]
     热钱包 --> 用户子账户1[user1.cex.near]
     热钱包 --> 用户子账户2[user2.cex.near]
